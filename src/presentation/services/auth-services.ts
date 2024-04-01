@@ -72,6 +72,7 @@ export class authServices {
 
             id: user.id,
             email: user.email,
+            role: user.role,
             duration: '1h'
 
         })

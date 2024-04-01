@@ -9,7 +9,7 @@ export class CategoryService {
     constructor() { }
 
 
-    public async createCategory(dto: createCategoryDto, user: userEntity) {
+    public async createCategory(dto: createCategoryDto) {
 
         const existCategory = await categoryModel.findOne({ name: dto.name })
 
@@ -17,19 +17,11 @@ export class CategoryService {
 
         try {
 
-            const category = new categoryModel({
-                ...dto,
-                user: user.id
-            })
+            const category = new categoryModel( dto )
 
             await category.save()
 
-            return {
-                id: category.id,
-                name: category.name,
-                available: category.available,
-                user: user.id
-            }
+            return category
 
         } catch (error) {
 

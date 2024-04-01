@@ -1,3 +1,4 @@
+import { validators } from "../../../config";
 
 
 export class createCategoryDto {
@@ -6,13 +7,14 @@ export class createCategoryDto {
     constructor(
 
         public name: string,
-        public available: boolean
+        public available: boolean,
+        public user: string, //id del usuario
 
     ){}
 
     static create ( object:  { [ key: string ]: any } ): [string?, createCategoryDto?] {
 
-        const { name, available = false } = object;
+        const { name, available = false, user } = object;
 
         let availableBoolean = available
 
@@ -25,7 +27,11 @@ export class createCategoryDto {
             availableBoolean = (available === 'true')
         }
 
-        return [undefined, new createCategoryDto( name, availableBoolean )]
+        if(!user) return  ['Missing user', undefined]
+
+        if( !validators.isMongoId(user) ) return ['Invalid user', undefined]
+
+        return [undefined, new createCategoryDto( name, availableBoolean, user )]
 
     }
 

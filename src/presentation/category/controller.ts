@@ -26,11 +26,16 @@ export class CategoryController {
 
     createCategory =  (req: Request, res: Response) => {
 
-        const [error, dto] = createCategoryDto.create(req.body)
+        const [error, dto] = createCategoryDto.create({
+
+            ...req.body,
+             user: req.body.user.id,
+        
+        })
 
         if(error) return res.status(400).json({msg: error})
 
-        this.categoryService.createCategory(dto!, req.body.user)
+        this.categoryService.createCategory(dto!)
         .then(category => res.status(200).json(category))
         .catch(error => this.handleError(error, res))
 

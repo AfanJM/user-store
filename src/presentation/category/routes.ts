@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { CategoryController } from './controller'
-import { AuthMiddleware } from "../middlewares";
+import { AuthMiddleware, AutorizacionMiddleware } from "../middlewares";
 import { CategoryService } from "../services/categories-service";
+
 
 export class CategoryRoutes {
     
@@ -15,7 +16,7 @@ export class CategoryRoutes {
 
         //rutas
         router.get('/', controller.getCategory)
-        router.post('/', AuthMiddleware.validateJwt , controller.createCategory)
+        router.post('/', [ AuthMiddleware.validateJwt , AutorizacionMiddleware.ValidRole(['ADMIN_ROLE']) ] ,  controller.createCategory)
 
         return router;
 

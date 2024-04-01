@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ProductController } from "./controller";
-import { AuthMiddleware } from "../middlewares";
+import { AuthMiddleware, AutorizacionMiddleware } from "../middlewares";
 import { ProductService } from "../services/products-service";
 
 export class ProductRouter {
@@ -19,7 +19,7 @@ export class ProductRouter {
 
         //rutas
         router.get('/' , controller.getProduct )
-        router.post('/', AuthMiddleware.validateJwt ,controller.createProduct )
+        router.post('/', [AuthMiddleware.validateJwt, AutorizacionMiddleware.ValidRole(['ADMIN_ROLE'])] ,controller.createProduct )
 
         return router;
     
